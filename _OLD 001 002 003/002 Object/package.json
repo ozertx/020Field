@@ -1,0 +1,18 @@
+{
+  "name": "object",
+  "version": "0.1.0",
+  "dependencies": {
+    "nodejs": "0.0.0",
+    "sockjs": "^0.3.19",
+    "socksjs": "^0.5.0"
+  },
+  "main": "DataService.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

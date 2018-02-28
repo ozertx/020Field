@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script src="https://unpkg.com/vue"></script>
+    <script src="SurfaceFront.js"></script>
+
+    <style type="text/css">
+
+        .Surface
+        {
+            width: 1000px;
+            height: 1000px;
+            border: solid 1px black;
+            vertical-align: middle;
+            overflow: hidden;
+            position: relative;
+       }
+
+        .ChunkBlock
+        {
+
+            position: absolute;
+
+            width: 8px;
+            height: 8px;
+            border: solid 1px black;
+            font-size: 0px;
+            background-color: #000000;
+        }
+
+        .Console
+        {
+            width: 1000px;
+            border: solid 1px black;
+
+        }
+
+        .ConsoleMessage {
+
+        }
+
+
+
+
+    </style>
+
+</head>
+
+
+
+<body>
+
+  <!-- <div id="app">
+      <div class="Surface">
+          <template v-for="chunk in chunks">
+            <div class="ChunkBlock" v-bind:style="'top:'+chunk.posY*100+'px; ' + 'left:'+chunk.posX*100+'px;'">
+                  X: {{ chunk.posX }} <br> Y: {{ chunk.posY }} <br> value: {{ chunk.value }}  <br>
+           </div>
+         </template>
+      </div>
+      <div class="Console">
+          <div class="ConsoleMessage" v-for="message in consoleMessages">
+              {{ message.text}}
+          </div>
+      </div>
+  </div> -->
+
+
+  <div id="app">
+      <div class="Surface">
+          <template v-for="chunk in UNIVERSE">
+            <div class="ChunkBlock" v-bind:style="'top:'+chunk.posY*100+'px; ' + 'left:'+chunk.posX*100+'px;'">
+                  X: {{ chunk[0].x }} <br> Y: {{ chunk[0].y }} <br> value: {{ chunk[0].value }}  <br>
+           </div>
+         </template>
+      </div>
+      <div class="Console">
+          <div class="ConsoleMessage" v-for="message in consoleMessages">
+              {{ message.text}}
+          </div>
+      </div>
+  </div>
+
+
+
+<script>
+
+    var chunks = []; // 128x128
+    var consoleMessages = [];
+
+    let $U = { size:128,dot :8 }
+
+    let UNIVERSE = Array($U.size)
+
+
+    for (let i = 0; i < $U.size; i++) {
+      UNIVERSE[i] = Array($U.size)
+    }
+
+    // MAIN loop
+    // for (let i = 0; i < $U.size; i++) for (let j = 0; j < $U.size;j++) { UNIVERSE[i][j] = i+j }
+    // MAIN loop
+
+
+    for (let i = 0; i < $U.size; i++) for (let j = 0; j < $U.size;j++) {
+      UNIVERSE[i][j] = {}
+      UNIVERSE[i][j]['color'] = "#070707"
+      UNIVERSE[i][j]['x'] = i
+      UNIVERSE[i][j]['y'] = j
+      UNIVERSE[i][j]['value'] = 0
+
+
+      // https://learn.javascript.ru/modifying-document
+      //
+      // var div = document.createElement('div');
+      // div.className = "alert alert-success";
+      // div.innerHTML = "<strong>Ура!</strong> Вы прочитали это важное сообщение.";
+      //
+      // document.body.appendChild(div);
+
+
+
+    }
+
+    //
+    // var divName = "block_" + chunk.posX + "_" + chunk.posY + "'>";
+    // var div = document.getElementById(divName);
+    // if(div == null) alert("Bypass getElementById Crash  "  + divName );
+    // chunk.div = div;
+    //
+
+    console.log(UNIVERSE)
+
+
+
+
+    chunks.push(new ChunkFront([1,1]));
+    chunks.push(new ChunkFront([1,2]));
+    chunks.push(new ChunkFront([2,1]));
+    chunks.push(new ChunkFront([2,2]));
+
+
+
+    var app = new Vue({
+            el: '#app',
+            data: {
+                posTop: 200,
+                chunks: chunks,
+                consoleMessages: consoleMessages
+            }
+        })
+
+
+    //alert(JSON.stringify(chunks));
+
+    consoleMessages.push({text:"ServiceInited"});
+    consoleMessages.push({text:"ServiceInited"});
+    consoleMessages.push({text:"ServiceInited"});
+
+
+</script>
+            <!---- ----->
+    This is first
+    <br>
+    <br>
+
+
+<input id="FormText" type="text" name="FormText" placeholder=""><button onclick="sendData();">send</button>
+
+
+<div id="MessageDIV">
+
+</div>
+
+<div class="BlockLine" id="SurfaceDiv">
+</div>
+
+
+
+
+<!--
+<div class="BlockLine" id="SurfaceDiv">
+    <div class="block1" >
+
+    </div>
+    <div class="block1">
+
+    </div>
+    <div class="block1">
+
+    </div>
+    <div class="block1">
+
+    </div>
+    <div class="block1">
+
+    </div>
+</div>
+<div class="BlockLine">
+    <div class="block1">
+
+    </div>
+    <div class="block1">
+
+    </div>
+    <div class="block1">
+
+    </div>
+    <div class="block1">
+
+    </div>
+    <div class="block1">
+
+    </div>
+</div>
+
+-->
+
+
+
+
+<script type="text/javascript">
+
+
+
+
+    var Element = document.getElementById('FormText');
+    var Messages = document.getElementById('MessageDIV');
+    var MessageCount = 1;
+
+    if(Element == null) alert('err 1');
+    if(Messages == null) alert('err 2');
+
+
+    function PushMessage(text)
+    {
+        Messages.innerHTML += MessageCount + ": " +   text + '<br/>';
+        MessageCount++;
+    }
+
+
+    var surface;
+
+    function MessageHandler(message)
+    {
+        var Mdata = message.data;
+        //data = JSON.parse(data);
+        //alert(typeof(data) + '  ' + data);
+        var Mhandler = JSON.parse(Mdata);
+
+        switch ( Mhandler.type ) {
+            case 'broadcast':
+                //PushMessage(Mhandler.message);
+                break;
+            case 'init':
+                surface = new SurfaceFront(Mhandler.posRect);
+                surface.Init("SurfaceDiv");
+                //PushMessage(Mhandler.posRect);
+            break;
+        }
+
+
+
+    }
+
+
+
+
+</script>
+
+
+
+</body>
+</html>

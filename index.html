@@ -1,12 +1,66 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>020</title>
-  </head>
+<head>
+    <title>Vue</title>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="index.js"></script>
+</head>
 
-  <script src="index.js"></script>
-  <body>
 
-  </body>
+
+<body>
+<div id="app">
+
+
+    <ol>
+        <li v-for="col in cols">
+           -- {{ col.rows }}
+
+            <div v-for="row in col.rows">
+                --- {{ row.text }}
+
+            </div>
+
+        </li>
+
+        <button v-on:click="Method1">1й метод push</button>
+        <button v-on:click="Method2">2й метод pop</button>
+        <button v-on:click="Method3">3й метод full replace</button>
+
+    </ol>
+</div>
+
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            cols:
+                [
+                    { rows: [{text:"r11"},{text:"r12"}] },
+                    { rows: [{text:"r21"},{text:"r22"}] }
+                ]
+        },
+        methods: {
+            Method1: function()
+            {
+                //alert('method1 alert');
+                this.cols.push({ rows: [{text:"r31"},{text:"r32"}] });
+            },
+            Method2: function()
+            {
+                //alert('method1 alert');
+                this.cols.pop();
+            },
+            Method3: function()
+            {
+                //alert('method1 alert');
+                this.cols = [
+                    { rows: [{text:"r11"},{text:"r12"}] },
+                    { rows: [{text:"r21"},{text:"r22"}] }
+                ];
+            }
+        }
+    })
+</script>
+</body>
 </html>
