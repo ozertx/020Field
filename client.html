@@ -8,84 +8,80 @@
 
     <style type="text/css">
 
-        .Surface
-        {
+        .Surface{
             width: 1500px;
             height: 1500px;
             border: solid 1px black;
             vertical-align: middle;
             overflow: hidden;
             position: relative;
-
        }
 
-        .ChunkBlock
-        {
-
+        .ChunkBlock{
             position: absolute;
-
-            width: 8px;
-            height: 8px;
+            width: 32px;
+            height: 32px;
             border: solid 1px black;
             font-size: 0px;
             background-color: #000000;
             border: 0px;
         }
 
-        .Console
-        {
+        .Console{
             width: 1000px;
             border: solid 1px black;
-
         }
 
-        .ConsoleMessage {
-
-        }
-
-
-
-
+        .ConsoleMessage {        }
     </style>
-
 </head>
 
 
 
 <body>
+    <div id="app">
+        <div id="Surface" class="Surface">
 
-  <!-- <div id="app">
-      <div class="Surface">
-          <template v-for="chunk in chunks">
-            <div class="ChunkBlock" v-bind:style="'top:'+chunk.posY*100+'px; ' + 'left:'+chunk.posX*100+'px;'">
-                  X: {{ chunk.posX }} <br> Y: {{ chunk.posY }} <br> value: {{ chunk.value }}  <br>
-           </div>
-         </template>
-      </div>
-      <div class="Console">
-          <div class="ConsoleMessage" v-for="message in consoleMessages">
-              {{ message.text}}
-          </div>
-      </div>
-  </div> -->
-
-
-  <div id="app">
-      <div id="Surface" class="Surface">
-
-      </div>
-      <div class="Console">
-      </div>
-  </div>
-
-
+        </div>
+        <div class="Console">
+        </div>
+    </div>
 
 <script>
+
+
+    let U = {
+        space : {
+            tenzors: null,
+        },
+        time:{
+            energy:null,
+            entropy:null,
+            balance:null,
+        },
+        substance:{
+            solid:null,
+            gas:null,
+            particles:null,
+            balance:null,
+        },
+        information: {
+            balance:null,
+            harmony:null,
+        }
+    }
 
     var chunks = []; // 128x128
     var consoleMessages = [];
 
-    let $U = { size:256,dot :8 }
+    let $U = {
+        size:128,
+        dimensions: {
+            tileSize: 32
+        }
+    }
+
+
 
     let UNIVERSE = Array($U.size)
 
@@ -100,6 +96,8 @@
     var Surface = document.getElementById('Surface');
     if(Surface == null) alert('err 1');
 
+    //scope
+    let tilesize = $U.dimensions.tileSize
     for (let i = 0; i < $U.size; i++) for (let j = 0; j < $U.size;j++) {
       UNIVERSE[i][j] = {}
       UNIVERSE[i][j]['color'] = "#070707"
@@ -109,19 +107,11 @@
 
       let div = document.createElement('div')
       div.className = 'ChunkBlock'
-      div.style.left = `${j*8}px`
-      div.style.top = `${i*8}px`
-
+      div.style.left = `${j*tilesize}px`
+      div.style.top = `${i*tilesize}px`
 
       UNIVERSE[i][j]['div'] = Surface.appendChild(div)
 
-      // https://learn.javascript.ru/modifying-document
-      //
-      // var div = document.createElement('div');
-      // div.className = "alert alert-success";
-      // div.innerHTML = "<strong>Ура!</strong> Вы прочитали это важное сообщение.";
-      //
-      // document.body.appendChild(div);
     }
 
     setInterval(()=>{
@@ -149,22 +139,12 @@
 
 
 
-
-    chunks.push(new ChunkFront([1,1]));
-    chunks.push(new ChunkFront([1,2]));
-    chunks.push(new ChunkFront([2,1]));
-    chunks.push(new ChunkFront([2,2]));
-
-
-
-
-
+    //chunks.push(new ChunkFront([1,1]));
     //alert(JSON.stringify(chunks));
 
     consoleMessages.push({text:"ServiceInited"});
     consoleMessages.push({text:"ServiceInited"});
     consoleMessages.push({text:"ServiceInited"});
-
 
 </script>
             <!---- ----->
@@ -190,7 +170,7 @@
 <script type="text/javascript">
 
 
-
+/*
 
     var Element = document.getElementById('FormText');
     var Messages = document.getElementById('MessageDIV');
@@ -199,16 +179,13 @@
     if(Element == null) alert('err 1');
     if(Messages == null) alert('err 2');
 
-
     function PushMessage(text)
     {
         Messages.innerHTML += MessageCount + ": " +   text + '<br/>';
         MessageCount++;
     }
 
-
     var surface;
-
     function MessageHandler(message)
     {
         var Mdata = message.data;
@@ -231,7 +208,7 @@
 
     }
 
-
+*/
 
 
 </script>
