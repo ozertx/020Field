@@ -4,19 +4,19 @@
     <meta charset="UTF-8">
     <title>Title</title>
 
-    <script src="https://unpkg.com/vue"></script>
     <script src="SurfaceFront.js"></script>
 
     <style type="text/css">
 
         .Surface
         {
-            width: 1000px;
-            height: 1000px;
+            width: 1500px;
+            height: 1500px;
             border: solid 1px black;
             vertical-align: middle;
             overflow: hidden;
             position: relative;
+
        }
 
         .ChunkBlock
@@ -29,6 +29,7 @@
             border: solid 1px black;
             font-size: 0px;
             background-color: #000000;
+            border: 0px;
         }
 
         .Console
@@ -70,17 +71,10 @@
 
 
   <div id="app">
-      <div class="Surface">
-          <template v-for="chunk in UNIVERSE">
-            <div class="ChunkBlock" v-bind:style="'top:'+chunk.posY*100+'px; ' + 'left:'+chunk.posX*100+'px;'">
-                  X: {{ chunk[0].x }} <br> Y: {{ chunk[0].y }} <br> value: {{ chunk[0].value }}  <br>
-           </div>
-         </template>
+      <div id="Surface" class="Surface">
+
       </div>
       <div class="Console">
-          <div class="ConsoleMessage" v-for="message in consoleMessages">
-              {{ message.text}}
-          </div>
       </div>
   </div>
 
@@ -91,7 +85,7 @@
     var chunks = []; // 128x128
     var consoleMessages = [];
 
-    let $U = { size:128,dot :8 }
+    let $U = { size:256,dot :8 }
 
     let UNIVERSE = Array($U.size)
 
@@ -103,15 +97,23 @@
     // MAIN loop
     // for (let i = 0; i < $U.size; i++) for (let j = 0; j < $U.size;j++) { UNIVERSE[i][j] = i+j }
     // MAIN loop
-
+    var Surface = document.getElementById('Surface');
+    if(Surface == null) alert('err 1');
 
     for (let i = 0; i < $U.size; i++) for (let j = 0; j < $U.size;j++) {
       UNIVERSE[i][j] = {}
       UNIVERSE[i][j]['color'] = "#070707"
       UNIVERSE[i][j]['x'] = i
       UNIVERSE[i][j]['y'] = j
-      UNIVERSE[i][j]['value'] = 0
+      UNIVERSE[i][j]['value'] = Math.round(Math.random() *9)
 
+      let div = document.createElement('div')
+      div.className = 'ChunkBlock'
+      div.style.left = `${j*8}px`
+      div.style.top = `${i*8}px`
+
+
+      UNIVERSE[i][j]['div'] = Surface.appendChild(div)
 
       // https://learn.javascript.ru/modifying-document
       //
@@ -120,17 +122,28 @@
       // div.innerHTML = "<strong>Ура!</strong> Вы прочитали это важное сообщение.";
       //
       // document.body.appendChild(div);
-
-
-
     }
 
-    //
-    // var divName = "block_" + chunk.posX + "_" + chunk.posY + "'>";
-    // var div = document.getElementById(divName);
-    // if(div == null) alert("Bypass getElementById Crash  "  + divName );
-    // chunk.div = div;
-    //
+    setInterval(()=>{
+        for (let i = 0; i < $U.size; i++) for (let j = 0; j < $U.size;j++) {
+             UNIVERSE[i][j]['div'].style.backgroundColor = '#aa' + Math.round(Math.random() *9) + Math.round(Math.random() *9) + Math.round(Math.random() *9)+Math.round(Math.random() *9)
+        }
+
+
+    },1000)
+
+
+
+    var div = document.createElement('div');
+    div.className = 'ChunkBlock'
+    div.style.top = '100px'
+    div.style.backgroundColor = '#aaaaaa'
+    Surface.appendChild(div)
+
+
+    var div = document.createElement('div');
+    div.className = 'ChunkBlock'
+    Surface.appendChild(div)
 
     console.log(UNIVERSE)
 
@@ -144,14 +157,6 @@
 
 
 
-    var app = new Vue({
-            el: '#app',
-            data: {
-                posTop: 200,
-                chunks: chunks,
-                consoleMessages: consoleMessages
-            }
-        })
 
 
     //alert(JSON.stringify(chunks));
@@ -178,46 +183,6 @@
 <div class="BlockLine" id="SurfaceDiv">
 </div>
 
-
-
-
-<!--
-<div class="BlockLine" id="SurfaceDiv">
-    <div class="block1" >
-
-    </div>
-    <div class="block1">
-
-    </div>
-    <div class="block1">
-
-    </div>
-    <div class="block1">
-
-    </div>
-    <div class="block1">
-
-    </div>
-</div>
-<div class="BlockLine">
-    <div class="block1">
-
-    </div>
-    <div class="block1">
-
-    </div>
-    <div class="block1">
-
-    </div>
-    <div class="block1">
-
-    </div>
-    <div class="block1">
-
-    </div>
-</div>
-
--->
 
 
 
