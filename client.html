@@ -81,6 +81,12 @@
         }
     }
 
+    $U.bypass = {}
+    $U.bypass.chunk = bypassFunc => {
+        for (let i = 0; i < $U.size; i++) for (let j = 0; j < $U.size;j++) {
+            bypassFunc(UNIVERSE[i][j]) // chunk
+        }
+    }
 
 
     let UNIVERSE = Array($U.size)
@@ -114,11 +120,40 @@
 
     }
 
-    setInterval(()=>{
+    //  ----                ---- ----                ---- ----                ---- ----                ---- ----                ----
+    var TICK_COUNTER = 0
+    function TIME() {
+        TICK_COUNTER++
+    //    time1() // first
+
+        time2()
+    }
+
+    function time1(){  // --->
         for (let i = 0; i < $U.size; i++) for (let j = 0; j < $U.size;j++) {
              UNIVERSE[i][j]['div'].style.backgroundColor = '#aa' + Math.round(Math.random() *9) + Math.round(Math.random() *9) + Math.round(Math.random() *9)+Math.round(Math.random() *9)
         }
+    }
 
+    function time2() {  // ---> heating
+
+        function color(hex) {
+            hex %= 10
+            return `#${hex}${hex}${hex}${hex}${hex}${hex}`
+        }
+
+        $U.bypass.chunk(CK => { // CK = chunk
+            CK['value'] = CK['x'] * TICK_COUNTER * 0.01
+            CK['div'].style.backgroundColor = color(CK['value'])
+            //CK['div'].style.backgroundColor = color(TICK_COUNTER)
+        })
+
+
+
+    }
+
+    setInterval(()=>{
+        TIME()
 
     },1000)
 
